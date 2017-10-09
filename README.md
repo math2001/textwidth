@@ -6,3 +6,23 @@ A little Sublime Text 3 plugin to automatically insert line breaks at a
 specific column. It just splits *before* the word. It's my adaptation of vim's
 `textwidth` setting (which is the reason for this package name).
 
+This plugin is useful for writing text (markdown, plain text, etc), as it
+automatically insert a line break at x characters or less (it wouldn't split a
+word).
+
+If you want to enable this behaviour everywhere, just add this to your global
+settings:
+
+```json
+"textwidth": 80
+```
+
+I wouldn't recommend doing that though, it might be annoying when you're
+programming. If you just want this to work in Markdown for example:
+
+1. open a markdown file
+2. open the command palette (<kbd>ctrl+shift+p</kbd>)
+3. type `settings syntax specific` and hit <kbd>enter</kbd>
+4. add the same code as above (`"textwidth": 80`) in there
+
+Done!
