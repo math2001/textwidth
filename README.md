@@ -4,5 +4,5 @@
 
 A little Sublime Text 3 plugin to automatically insert line breaks at a
 specific column. It just splits *before* the word. It's my adaptation of vim's
-`linebreak` setting (which is the reason for this package name).
+`textwidth` setting (which is the reason for this package name).
 
