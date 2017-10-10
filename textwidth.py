@@ -7,12 +7,12 @@ import re
 from .breakline import breaklines
 from Default.paragraph import expand_to_paragraph
 
-class TextWidthReplace(sublime_plugin.TextCommand):
+class TextwidthReplace(sublime_plugin.TextCommand):
 
     def run(self, edit, region, text):
         self.view.replace(edit, sublime.Region(*region), text)
 
-class TextWidthCommand(sublime_plugin.TextCommand):
+class TextwidthCommand(sublime_plugin.TextCommand):
 
     """Re arrange the selection
     or the cursor's paragraph if it's there isn't any"""
@@ -29,7 +29,7 @@ class TextWidthCommand(sublime_plugin.TextCommand):
                                                          'text': result})
 
 
-class TextWidth(sublime_plugin.ViewEventListener):
+class Textwidth(sublime_plugin.ViewEventListener):
 
     @classmethod
     def is_applicable(self, settings):

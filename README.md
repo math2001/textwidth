@@ -6,9 +6,13 @@ A little Sublime Text 3 plugin to automatically insert line breaks at a
 specific column. It just splits *before* the word. It's my adaptation of vim's
 `textwidth` setting (which is the reason for this package name).
 
+## Usage
+
 This plugin is useful for writing text (markdown, plain text, etc), as it
 automatically insert a line break at x characters or less (it wouldn't split a
 word).
+
+### Enabling automatic wrapping
 
 If you want to enable this behaviour everywhere, just add this to your global
 settings:
@@ -26,3 +30,44 @@ programming. If you just want this to work in Markdown for example:
 4. add the same code as above (`"textwidth": 80`) in there
 
 Done!
+
+### Manual reorganizing
+
+Sometimes, you write a paragraph, but then you change some words, and the
+wrapping is just wrong.
+
+Well, you don't have to re do everything manually: you just need to run
+`textwidth` command. It'll reorganize the selection if there is some, or the
+paragraph you have a cursor in.
+
+#### Add it to the command palette
+
+Create a file called `Default.sublime-commands` in your `User` directory, and
+write this:
+
+```json
+[
+    { "caption": "Text Width: Wrap", "command": "textwidth" }
+]
+```
+
+#### Bind a shortcut to it
+
+In your keybinding file
+
+```json
+{
+    "keys": ["alt+w"],
+    "command": "textwidth"
+}
+```
+
+### For VIM users
+
+If you use a vim emulating package, `gq` will re-wrap the selection. You can use
+`gqap` to wrap the current paragraph you're in (`gq` a paragraph).
+
+
+---
+
+Hope you like it :heart:
