@@ -7,6 +7,11 @@ import re
 from .breakline import breaklines
 from Default.paragraph import expand_to_paragraph
 
+def get_indentation_chars(settings):
+    if settings.get('translate_tabs_to_spaces') is True:
+        return ' ' * settings.get('tab_size')
+    return '\t'
+
 class TextwidthReplace(sublime_plugin.TextCommand):
 
     def run(self, edit, region, text):
@@ -18,15 +23,20 @@ class TextwidthCommand(sublime_plugin.TextCommand):
     or the cursor's paragraph if it's there isn't any"""
 
     def run(self, edit):
-        width = self.view.settings().get('textwidth')
-        for region in self.view.sel():
+        v = self.view
+        settings = v.settings()
+        width = settings.get('textwidth')
+        ic = get_indentation_chars(settings)
+        for region in v.sel():
             if region.empty():
-                region = expand_to_paragraph(self.view, region.begin())
-            result = breaklines(self.view.substr(region).replace('\n', ' '), width)
+                region = expand_to_paragraph(v, region.begin())
+            result = breaklines(v.substr(region).replace('\n', ' '), width,
+                                ic * v.indentation_level(region.begin()))
             if result is None:
                 continue
-            self.view.run_command('text_width_replace', {'region': [region.a, region.b],
-                                                         'text': result})
+            v.run_command('textwidth_replace',
+                          {'region': [region.a, region.b],
+                          'text': result})
 
 
 class Textwidth(sublime_plugin.ViewEventListener):
@@ -34,6 +44,7 @@ class Textwidth(sublime_plugin.ViewEventListener):
     @classmethod
     def is_applicable(self, settings):
         self.textwidth = settings.get('textwidth')
+        self.indentation_chars = get_indentation_chars(settings)
         self.editing = False
         return isinstance(self.textwidth, int)
 
@@ -50,11 +61,13 @@ class Textwidth(sublime_plugin.ViewEventListener):
                 continue
 
             lineregion = v.line(region.begin())
-            newtext = breaklines(v.substr(lineregion), self.textwidth)
+            newtext = breaklines(v.substr(lineregion), self.textwidth,
+                                 self.indentation_chars \
+                                 * v.indentation_level(lineregion.begin()))
             if newtext is None:
-                return 
+                return
             self.editing = True
-            v.run_command('text_width_replace', {
+            v.run_command('textwidth_replace', {
                 'region': [lineregion.a, lineregion.b],
                 'text': newtext
             })
