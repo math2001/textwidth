@@ -57,7 +57,8 @@ class Textwidth(sublime_plugin.ViewEventListener):
             return
         v = self.view
         for region in v.sel():
-            if not region.empty():
+            if not region.empty() \
+                or not v.classify(region.end()) & sublime.CLASS_LINE_END:
                 continue
 
             lineregion = v.line(region.begin())
